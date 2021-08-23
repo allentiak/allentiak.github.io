@@ -1,3 +1,177 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><atom:link href="http://allentiak.github.io/" rel="self" type="application/rss+xml"/><title>Just a Blog</title><link>http://allentiak.github.io/</link><description>Just a quick blog mockup</description><lastBuildDate>Sat, 21 Aug 2021 18:30:26 -0300</lastBuildDate><generator>clj-rss</generator><item><guid>http://allentiak.github.io/posts-output/2021-08-13-gsoc-partial-evaluation-report/</guid><link>http://allentiak.github.io/posts-output/2021-08-13-gsoc-partial-evaluation-report/</link><title>Clojure CLI Tools in Debian - GSoC 2021 Partial Evaluation Report</title><description><![CDATA[<p><strong>NOTE</strong>: this blog post is based on <a href="https://lists.debian.org/debian-clojure/2021/07/msg00000.html">my "Clojure CLI Tools in Debian" GSoC 2021 project Partial Evaluation Report</a>.</p><!--more--><p>Hi, everybody!</p><p>For those who don't know me, my name is Leandro Doctors (allentiak on IRC), and I'm the Debian Clojure Team's GSoC 2021 intern. My mentor is Louis-Philippe Véronneau[*] (pollo on IRC). My co-mentor is Utkarsh Gupta (utkarsh2102 on IRC). My 'no-mentor' :) is Elana Hashman (ehashman on IRC).</p><p>In this message, I will summarize what I've been up to during the Coding I period (June 7th - July 16th).</p><hr /><p>TL;DR: my updated <code>data-xml-clojure</code> package was accepted[1] in experimental on Wednesday night :-)</p><hr /><p>[1] <a href="https://tracker.debian.org/news/1244465/accepted-data-xml-clojure-020alpha6-1-source-into-experimental/">https://tracker.debian.org/news/1244465/accepted-data-xml-clojure-020alpha6-1-source-into-experimental/</a></p><p>Now, let's tell the full story.</p><p>During the first days of the "Coding I" phase, I did some research on the <code>clj</code> dependencies. And after the precious feedback from Louis-Philippe, Elana, Utkarsh, and Alex Miller (the upstream developer of <code>clj</code>, among many other libraries), I came up with the following packaging strategy.</p><ol><li>update <code>org.clojure:data.xml</code> (<code>data-xml-clojure</code>) to 0.2.0-beta6.</li><li>package <code>org.clojure:tools.gitlibs</code> (<code>tools-gitlibs-clojure</code>).</li><li>consider updating <code>libjsch-agent-proxy-java</code>, <code>jgit</code>, <code>libtools-cli-clojure</code> (all of them already in Debian).</li><li>consider packaging <code>com.cognitec.aws:*</code> packages.</li></ol><p>According to my original proposal, I should have completed all four tasks during Coding I.
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><atom:link href="http://allentiak.github.io/" rel="self" type="application/rss+xml"/><title>Just a Blog</title><link>http://allentiak.github.io/</link><description>Just a quick blog mockup</description><lastBuildDate>Mon, 23 Aug 2021 12:54:25 -0300</lastBuildDate><generator>clj-rss</generator><item><guid>http://allentiak.github.io/posts-output/2021-08-23--gsoc.final.report--clojure.build.tools.in.debian/</guid><link>http://allentiak.github.io/posts-output/2021-08-23--gsoc.final.report--clojure.build.tools.in.debian/</link><title>Clojure CLI Tools in Debian - GSoC 2021 Final Report</title><description>
+<![CDATA[
+<p><strong>NOTE</strong>: this blog post is based on <a href="https://lists.debian.org/debian-clojure/2021/08/msg00028.html">my "Clojure CLI Tools in Debian" GSoC 2021 project Final Report</a>.</p><h1 id="intro">Intro</h1><p>My name is Leandro Doctors (“allentiak” on IRC), and I’ve been the GSoC
+intern working with the Debian Clojure Team during 2021. This is my
+final report. You can also check <a href="https://salsa.debian.org/allentiak/gsoc-2021-proposal-feedback/-/blob/main/full.proposal--debian--2021--clojure-cli--leandro.doctors.pdf">my original
+proposal</a>
+and <a href="https://lists.debian.org/debian-clojure/2021/07/msg00000.html">my first
+report</a>.</p><h1 id="summary">Summary</h1><p>Whereas the raw data may not sound by itself very positive, my personal
+conclusion is. This is, whereas I didn’t fully finish the required
+deliverables envisioned in my original proposal, I do feel I am much
+closer to, eventually, becoming a Debian Developer. So, by all means, I
+consider this project has had a positive outcome.</p><!--more--><h1 id="project">Project</h1><p>The goal of the “Clojure Build Tools in Debian” project was to provide
+Clojure Debian users with some of the latest advanced build tools and
+libraries the upstream Clojure developers have been lately working on.
+These include <code>tools.deps.alpha</code>, a library for dependency graph
+resolution and classpath building, and the CLI tool <code>clj</code>, for REPL
+interaction. If time permitted, I was also to improve the quality of
+both new and existing Clojure packages, and the overall Debian Clojure
+packaging process. My mentor was Louis-Louis-Philippe Véronneau, and my
+co-mentor was Utkarsh Gupta.</p><h1 id="motivation">Motivation</h1><p>Why this project? On the one side, if you’re a Clojure lover like me,
+you may have noticed that the Clojure experience in Debian is, as of mid
+2021, well... still quiet limited. Additionally, this project aligned
+with my own background in Free Software community building and my
+research interest in Peer Production.</p><p>When I mention how limited today’s Clojure experience in Debian is, I
+can see two reasons for this, deeply intertwined. The first one is that
+there currently aren’t many Clojure-specific packaging tools in Debian
+(such as a <code>clojure-debian-helper</code>). The second reason for which we only
+currently have a suboptimal Clojure experience in Debian, and probably
+the root of the previous one, is that many core build tools and
+libraries for the language have not simply been packaged yet. My project
+aimed to attack that seemingly root cause.</p><p>As I said, another reason for me choosing this project is my own
+experience as the Co-founder and Leader of, probably, the first Free
+Software Community experience in my hometown of San Juan, Argentina.
+That interest in Free Software evolved in a first PhD attempt in what is
+now known as the field of Peer Production. A subject that has lived
+within me as a research interest during my day job at a University.</p><p>Being a Clojure fan, it felt only logical combining all those interests
+somehow. And this project seemed like the ideal combination.</p><h1 id="the-debian-clojure-team">The Debian Clojure Team</h1><p>I’ve been working with a small, yet very warm team. The current
+incarnation of the Debian Clojure Team exists thanks to the hard work of
+three people.</p><p>Elana Hashman (aka “the Clojure necromancer”), revived the team around
+three years ago. Later on, the team gained the invaluable presence of
+Louis-Philippe Véronneau and Utkarsh Gupta (my mentor and co-mentor,
+respectively).</p><p>Together, these “Three Musketeers” have maintained the team alive,
+allowing us, Debian users, to enjoy Clojure.</p><h1 id="status">Status</h1><p>During the first part of my project, I mainly worked on learning the
+basics of Debian packaging, and got my first package uploaded. I have to
+thank Louis-Philippe, Utkarsh, and Elana for their immense patience and
+support during that part, as it took me quite some effort grasping the
+basics of Debian packaging.</p><p>During the second part of my project, I worked on my last packages, and
+almost completed the originally required scope of the project. I only
+have to finish working on the transition from the currently provided set
+of packages (based on a Debian-specific clojure runner) to the newly
+provided upstream clojure and clj runners.</p><p>Unfortunately, I didn’t have much time left to start working on the
+opportunities for improvement already identified by the Debian Clojure
+Team originally outlined in my proposal. Whereas I did update one older
+Clojure package not built using leiningen (tools-data-xml-clojure), I
+didn’t write any Lintian tags to make Clojure packaging in Debian more
+robust, nor worked towards the automation of Clojure unit tests in
+autopkgtests via autodep8.</p><h2 id="deliverables-data-vs-conclusions">Deliverables: Data vs. Conclusions</h2><p>If we are to talk about deliverables, we should start with the data.
+According to my original proposal, I was required to provide both new
+and updated Clojure packages accepted into Debian “unstable”, and
+updated Clojure packaging documentation. Additionally, if time
+permitted, I was to also provide new Clojure Lintian tags merged by the
+Lintian maintainers, and new Clojure autodep8 scripts merged by the
+autodep8 maintainers. Whereas I partially accomplished both required
+tasks, I didn’t manage to start working on any of the optional
+deliverables.</p><p>When looked in isolation, those numbers may look somewhat disappointing
+for some people. However, I can draw a much more positive conclusion.
+Why?</p><p>Firstly, GSoC is supposed to be a learning experience. Moreover, as I
+said in my original proposal, “I
+approach<span>[</span>ed<span>]</span> this project as a great
+opportunity to, finally, start my journey towards becoming a Debian
+Developer”. In that sense, I consider the time invested into this
+project fruitful. In this way, I have learned the basics of packaging,
+how to interact with the Debian Clojure Team, and and already got my
+first packages accepted. Plus, I’m looking forward to continuing to work
+with the Debian Clojure Team so I can attain the original scope of the
+project. Therefore, all things considered, I can consider this
+experience as a moderate success.</p><h1 id="lessons-learned">Lessons Learned</h1><p>Technically speaking, if I have learned one thing during these weeks, is
+that packaging, although easy to be underestimated, is by no means a
+trivial process. As any Debian Developer surely knows, the onboarding
+process can take some time. Plus, what is easy for some people, can be
+difficult for others. In my case, this was quite evident. Whereas I can
+speak several languages and learning new ones takes me little effort,
+grasping the basics of packaging took me (literally!) blood, sweat and
+tears. Indeed, the packaging learning curve was quite steep for me.</p><p>That being said, I did learn a thing or two about packaging. So, if I
+managed to get here, I’m sure many others can. It may take them more or
+less time than what it took me, but learning (at least the basics) of
+packaging is an achievable goal.</p><p>Technical skill learning aside, I value very highly the non-technical
+skills I have so far improved during this project.</p><p>For instance, I also learned that it can take some time to adapt to
+real-time online communication. Before this project, remote working
+meant either exchanging emails or getting into video or audio calls,
+with a low emphasis on chat-based interaction. Early on, I realized that
+the Debian Clojure Team interacts almost exclusively via, well... chat!
+And those two approaches are very different indeed. It has taken me some
+time to adjust, but I’ve improved greatly in this aspect as well.</p><p>Finally, improving my time management skills has been also a key part of
+this process. Whereas I had already been working remotely for over a
+year and a half already, my day job is not so interaction-dependent as
+this project (specially in the beginning). So it took me some time to
+adapt to this way of working, and to plan my workload so I could use
+those waiting moments to advance in other parts of the project. Still a
+lot to improve here, but improving nevertheless.</p><h1 id="acknowledgments">Acknowledgments</h1><p>I first have to thank upstream. More specifically, one of the upstream
+developers of the clojure-tools, Alex Miller. Everytime I needed
+specific information on what do specific parts of the Clojure CLI
+tools’s codebase do, tools.deps.alpha do, he popped up a reply in a
+matter of hours. He has shown genuine interest in the success of is
+project during by carefully replying to my emails with detailed
+explanations of code intent and form, both in private and in public
+conversations. Thank you for all that, Alex!</p><p>Let’s move on to the Debian Clojure Team.</p><p>First, Elana. I thank Elana for her initial openness when I first
+contacted her about this idea. It was <span>*</span>her<span>*</span>
+who initially contacted Louis-Philippe so he would become my mentor. I
+wouldn’t have started to work on this project if it wasn’t for her.
+Plus, she provided quite a piece of advise in more that one ocassion.
+So, thank you very much for all that, Elana!</p><p>I also thank Utkarsh, my co-mentor, for his overall technical advise.
+And a special mention to his initial help to setup my Matrix client for
+OFTC chat. At that moment, it was <span>*</span>him<span>*</span> who
+took the time to help me in real time so I could solve that problem. So,
+thank you very much for all that, Utkarsh!</p><p>I finally have to thank Louis-Philippe, my mentor, for his patient
+guidance during the whole process. His dedication and hard work has been
+<span>*</span>instrumental<span>*</span> for my progress. And a
+special mention for his tolerance with respect to some unforeseen
+personal circumstances I had to endure during the first weeks. When one
+is playing the newbie, times abound when one depends on other people’s
+feedback. And Debian is made of volunteers, who have a life outside it.
+Every time I asked, Louis-Philippe was there. I wouldn’t have gotten
+here if it wasn’t for him. So, thank you
+<span>*</span>so<span>*</span> much for all that, Louis-Philippe!</p><h1 id="final-words">Final Words</h1><p>I would like to close this report with a reflection.</p><p>I have been using Debian for many, many years now, and I had been
+looking for a way to contribute back to the project for some time
+already. I even did some work on a non-packaging Debian project. That
+being said, I never managed to deliver much, really.</p><p>So, the very existence of outreach programs as this one is, in my humble
+opinion, crucial. In my case, the funding I got through the GSoC program
+was instrumental in being able to allocate time for this endeavor, and
+to finally get started contributing to Debian. Plus, it has had a very
+positive impact on me; in many ways, some of which I am only starting to
+discover now that the project is ending.</p><p>When I put things into perspective, this project is very important for
+me. Actually, it is nothing but the first step within a long-term
+journey: becoming a Debian member. Hopefully, I would like to be able to
+apply for Debian membership by the end of this year.</p><h1 id="questions">Questions?</h1><p>Thank you very much for your time reading this! I look forward to
+hearing (or reading) your feedback. Please come and meet with the Debian
+Clojure Team Moreover, I will be in the Clojure BoF on DebConf2021.
+Moreover, do not hesitate to send me an email.</p><h1 id="data">Data</h1><h2 id="task-status">Task Status</h2><ul><li><p>Required Tasks:</p><ul><li><p>T1: Setting up a full Debian packaging development environment
+and learning the basics of Debian packaging.</p><ul><li><p>Successfully completed the first part during the Application
+period.</p></li><li><p>Successfully completed the second part during the Coding
+periods.</p></li></ul></li><li><p>T2: Identifying and packaging the missing dependencies to
+package <code>clojure-cli</code>.</p><ul><li>Successfully completed as of the end of Coding II.</li></ul></li><li><p>T3: Packaging <code>clojure-cli</code>.</p><ul><li>90% done as of the end of Coding II.</li></ul></li><li><p>T4: Updating <code>clojure</code> to use <code>clojure-cli</code>.</p><ul><li>To be completed after GSoC.</li></ul></li><li><p>T5: Updating the Clojure Packaging Guide with information on how
+to use the new <code>clojure-cli</code> scripts.</p><ul><li>Improved existing documentation. To be completed after GSoC.</li></ul></li></ul></li><li><p>Optional Tasks:</p><ul><li><p>T6: Writing Lintian tags to make Clojure packaging in Debian
+more robust.</p><ul><li>To be completed after GSoC.</li></ul></li><li><p>T7: Working to automate Clojure unit testing in autopkgtests
+using autodep8.</p><ul><li>To be completed after GSoC.</li></ul></li><li><p>T8: Updating older Clojure packages not built using leiningen or
+clojure-cli.</p><ul><li>To be completed after GSoC.</li></ul></li></ul></li></ul><h2 id="packages">Packages</h2><ol><li><p>Updated packages:</p><ul><li>tools-data-xml-clojure
+<a href="https://tracker.debian.org/news/1244465/accepted-data-xml-clojure-020alpha6-1-source-into-experimental/">https://tracker.debian.org/news/1244465/accepted-data-xml-clojure-020alpha6-1-source-into-experimental/</a>
+Stuck in experimental until the latest version of Leiningen is
+packaged.</li></ul></li><li><p>New packages:</p><ul><li><p>tools-gitlibs-clojure -- Clojure API for programatically
+accessing git libraries. <a href="https://bugs.debian.org/905543">ITP:
+#905543</a> <a href="https://ftp-master.debian.org/new/tools-gitlibs-clojure_2.3.167-1.html">in
+NEW</a>.</p></li><li><p>“ITP: tools-deps-alpha-clojure -- functional API for dependency
+management and classpath creation”
+<a href="https://bugs.debian.org/891136">https://bugs.debian.org/891136</a> Needs to be uploaded by
+Louis-Philippe.</p></li></ul></li><li><p>In-Progress packages:</p><ul><li>“ITP: clojure-cli -- upstream CLI entrypoints for Clojure”
+<a href="https://bugs.debian.org/891141">https://bugs.debian.org/891141</a> 90% done - Package completed.
+I only need to finish implementing the transition from existing
+‘clojure‘ scripts. To be completed after GSoC.</li></ul></li><li><p>Opened ITPs:</p><ul><li><p>“ITP: libtools-build-clojure -- a library for building
+artifacts” <a href="https://bugs.debian.org/992737">https://bugs.debian.org/992737</a></p><ul><li>To be completed after GSoC.</li></ul></li></ul></li><li><p>Reported bugs</p><ul><li><p>“libcore-specs-alpha-clojure: should provide (symlinks to) .jars
+in /usr/share/java” <a href="https://bugs.debian.org/992735">https://bugs.debian.org/992735</a></p></li><li><p>“libspec-alpha-clojure: should provide (symlinks to) .jars in
+/usr/share/java” <a href="https://bugs.debian.org/992736">https://bugs.debian.org/992736</a></p></li></ul></li></ol><h2 id="other">Other</h2><ol><li><p>Interactions with upstream in <a href="https://lists.debian.org/debian-clojure/">the Debian-Clojure mailing
+list</a>:</p><ul><li>Many productive interactions with one of the upstream
+developers, Alex Miller
+(<a href="https://lists.debian.org/debian-clojure/2021/06/threads.html#00012">June</a>,
+<a href="https://lists.debian.org/debian-clojure/2021/08/threads.html">August</a>).</li></ul></li><li><p>Wiki page:</p><ol><li><a href="https://wiki.debian.org/Clojure/Goals/ClojureCLIToolsInDebian">https://wiki.debian.org/Clojure/Goals/ClojureCLIToolsInDebian</a></li></ol></li></ol>
+]]>
+</description>
+
+<pubDate>Mon, 23 Aug 2021 00:00:00 -0300</pubDate></item><item><guid>http://allentiak.github.io/posts-output/2021-08-13--gsoc-partial-evaluation-report--clojure.build.tools.in.debian/</guid><link>http://allentiak.github.io/posts-output/2021-08-13--gsoc-partial-evaluation-report--clojure.build.tools.in.debian/</link><title>Clojure CLI Tools in Debian - GSoC 2021 Partial Evaluation Report</title>
+<description>
+<![CDATA[
+<p><strong>NOTE</strong>: this blog post is based on <a href="https://lists.debian.org/debian-clojure/2021/07/msg00000.html">my "Clojure CLI Tools in Debian" GSoC 2021 project Partial Evaluation Report</a>.</p><!--more--><p>Hi, everybody!</p><p>For those who don't know me, my name is Leandro Doctors (allentiak on IRC), and I'm the Debian Clojure Team's GSoC 2021 intern. My mentor is Louis-Philippe Véronneau[*] (pollo on IRC). My co-mentor is Utkarsh Gupta (utkarsh2102 on IRC). My 'no-mentor' :) is Elana Hashman (ehashman on IRC).</p><p>In this message, I will summarize what I've been up to during the Coding I period (June 7th - July 16th).</p><hr /><p>TL;DR: my updated <code>data-xml-clojure</code> package was accepted[1] in experimental on Wednesday night :-)</p><hr /><p>[1] <a href="https://tracker.debian.org/news/1244465/accepted-data-xml-clojure-020alpha6-1-source-into-experimental/">https://tracker.debian.org/news/1244465/accepted-data-xml-clojure-020alpha6-1-source-into-experimental/</a></p><p>Now, let's tell the full story.</p><p>During the first days of the "Coding I" phase, I did some research on the <code>clj</code> dependencies. And after the precious feedback from Louis-Philippe, Elana, Utkarsh, and Alex Miller (the upstream developer of <code>clj</code>, among many other libraries), I came up with the following packaging strategy.</p><ol><li>update <code>org.clojure:data.xml</code> (<code>data-xml-clojure</code>) to 0.2.0-beta6.</li><li>package <code>org.clojure:tools.gitlibs</code> (<code>tools-gitlibs-clojure</code>).</li><li>consider updating <code>libjsch-agent-proxy-java</code>, <code>jgit</code>, <code>libtools-cli-clojure</code> (all of them already in Debian).</li><li>consider packaging <code>com.cognitec.aws:*</code> packages.</li></ol><p>According to my original proposal, I should have completed all four tasks during Coding I.
 Looking back, the main lesson from these past weeks is a known classic: my timeline was too optimistic: I definitely underestimated the difficulty of the packaging process. Out of the four tasks, I only finished the first one.</p><p>There were many challenges I had to overcome in order to update the library from version 0.0.8 to 0.2.0-alpha6:</p><p>This what I did:</p><p>First, I patched the source code so:</p><ul><li><ul><li>we avoid needlessly packaging <code>data-codec-clojure</code> (not currently in Debian).</li></ul></li><li><ul><li>we can ignore Clojure-Script-related dependencies.</li></ul></li></ul><p>Then, I completely overhauled the packaging code (this is, what goes inside <code>debian/</code>).</p><ul><li><ul><li>added support for automatically tracking newer releases.</li></ul></li><li><ul><li>the package now builds with Leiningen, instead of plain Java.</li></ul></li><li><ul><li>it now actually supports autopkgtest (the existing test was trivial).</li></ul></li></ul><p>All this improved the quality of the package.</p><p>I also improved the Clojure Packaging Tutorial[2] to make the process easier to follow.</p><p>[2] <a href="https://wiki.debian.org/Clojure/PackagingTutorial">https://wiki.debian.org/Clojure/PackagingTutorial</a></p><p>Looking back, it is almost as if I had started packaging the library from scratch...</p><p>But, more that what I produced, I think the most important part of all this is what I learned during these weeks.</p><p>As it was the first time I ever packaged anything in Debian, I had to learn the basics, bump by bump. (And, oh my, I surely did bump quite a few times!)</p><ul><li><ul><li>Basic packaging workflow.</li></ul></li><li><ul><li>Setup <code>sbuild</code>[3] to make it work with <code>gbp</code>[4] (when I had rebuilt bidi-clojure from scratch, I had used plain <code>sbuild</code>.)</li></ul></li><li><ul><li>Learn how to patch upstream files with <code>quilt</code>[5] (actually, via the <code>dquilt</code> frontend). This was the first really difficult task to do, since it took me quite some time to grasp it. Looking back, I think I was simply scared of breaking something :)</li></ul></li><li><ul><li>Understanding <code>debian/</code> files.</li></ul></li><li><ul><li>Understanding <code>debian/tests</code> (autopkgtest) files. This was particularly difficult, since the doc wasn't clear about it. So I then improved the Clojure Packaging Tutorial[2] to make the process easier to follow.</li></ul></li></ul><p>[2] <a href="https://wiki.debian.org/Clojure/PackagingTutorial">https://wiki.debian.org/Clojure/PackagingTutorial</a></p><p>[3] <a href="https://wiki.debian.org/sbuild">https://wiki.debian.org/sbuild</a></p><p>[4] <a href="https://manpages.debian.org/unstable/git-buildpackage/gbp.1.en.html">https://manpages.debian.org/unstable/git-buildpackage/gbp.1.en.html</a></p><p>[5] <a href="https://wiki.debian.org/UsingQuilt">https://wiki.debian.org/UsingQuilt</a></p><p>Definitely, all this was worth it. After all, my updated <code>data-xml-clojure</code> package was accepted[1] in experimental on Wednesday :-)</p><p>[1] https://tracker.debian.org/news/1244465/accepted-data-xml-clojure-020alpha6-1-source-into-experimental/</p><p>Now that I've <del>learned the basics of packaging</del> bumped enough to get my package accepted, I'm hopeful I can ramp up and catch up with (at least most of) my original schedule during Coding II.</p><p><code>tools-gitlibs-clojure</code>, you're next :-)</p><p>Thank you very much Louis-Philippe, Elana, and Utkarsh (plus a special mention to Alex) for your precious support during the last few weeks!</p>
-]]></description><pubDate>Fri, 13 Aug 2021 00:00:00 -0300</pubDate></item></channel></rss>
+]]>
+</description>
+<pubDate>Fri, 13 Aug 2021 00:00:00 -0300</pubDate></item></channel></rss>
